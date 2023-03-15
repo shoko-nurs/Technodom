@@ -1,0 +1,43 @@
+-- FUNCTION: public.checklink(character varying)
+
+-- DROP FUNCTION IF EXISTS public.checklink(character varying);
+
+CREATE OR REPLACE FUNCTION public.checklink(
+	line character varying,
+	OUT status integer,
+	OUT active_link character varying)
+    RETURNS record
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+
+declare
+	pk int;
+	txt varchar;
+begin
+
+	 select id from urls into pk where active=line;
+
+	 if pk is null then
+	 	select id, active from urls into pk, txt where history=line;
+
+		if pk is null then
+			status = 404;
+			active_link = 'none';
+			return;
+
+		end if;
+		status = 301;
+		active_link = txt;
+		return;
+	 end if;
+
+	 status = 200;
+	 active_link = 'OK';
+	 return;
+end;
+$BODY$;
+
+ALTER FUNCTION public.checklink(character varying)
+    OWNER TO shokonurs;

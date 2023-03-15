@@ -1,0 +1,34 @@
+-- Table: public.urls
+
+-- DROP TABLE IF EXISTS public.urls;
+
+CREATE TABLE IF NOT EXISTS public.urls
+(
+    id bigint NOT NULL DEFAULT nextval('urls_id_seq'::regclass),
+    active character varying(500) COLLATE pg_catalog."default",
+    history character varying(500) COLLATE pg_catalog."default",
+    CONSTRAINT urls_pkey PRIMARY KEY (id),
+    CONSTRAINT unique_active UNIQUE (active),
+    CONSTRAINT unique_history UNIQUE (history)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.urls
+    OWNER to shokonurs;
+-- Index: idx_active
+
+-- DROP INDEX IF EXISTS public.idx_active;
+
+CREATE INDEX IF NOT EXISTS idx_active
+    ON public.urls USING btree
+    (active COLLATE pg_catalog."default" ASC NULLS LAST)
+    TABLESPACE pg_default;
+-- Index: idx_history
+
+-- DROP INDEX IF EXISTS public.idx_history;
+
+CREATE INDEX IF NOT EXISTS idx_history
+    ON public.urls USING btree
+    (history COLLATE pg_catalog."default" ASC NULLS LAST)
+    TABLESPACE pg_default;
