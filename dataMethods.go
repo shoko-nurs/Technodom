@@ -54,6 +54,7 @@ func ValidateQuery(r *http.Request) (error, int, int, int) {
 	if pageStr == "" {
 		return errors.New("enter page number"), 400, 0, 0
 	}
+
 	if perPageStr == "" {
 		return errors.New("enter items per page number"), 400, 0, 0
 	}
@@ -96,10 +97,12 @@ func DataControl(w http.ResponseWriter, r *http.Request) {
 		err, status, page, items := ValidateQuery(r)
 
 		if err != nil {
+			fmt.Println(err)
 			json.NewEncoder(w).Encode(Response{
 				Message: err.Error(),
 				Status:  status,
 			})
+			return
 		}
 
 		qStr := fmt.Sprintf(`SELECT * FROM urls LIMIT %d OFFSET %d`, items, (page-1)*items)
@@ -120,13 +123,17 @@ func DataControl(w http.ResponseWriter, r *http.Request) {
 			}
 			data = append(data, pair)
 		}
+
 		if len(data) != 0 {
 			json.NewEncoder(w).Encode(data)
+			return
+
 		} else {
 			json.NewEncoder(w).Encode(Response{
 				Message: "There is no data on this page",
 				Status:  400,
 			})
+			return
 		}
 
 	}
