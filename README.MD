@@ -4,6 +4,7 @@
    http://technodom.shokonurs.codes:3334/redirects?url=z/x/c
    
    Методы управления данными
+
    а) Получить данные постранично
    http://technodom.shokonurs.codes:3334/admin/redirects?page=1&per_page=4
    
