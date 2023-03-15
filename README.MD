@@ -1,7 +1,7 @@
 1) Проверить код можно по ссылкам:
    
    Пользовательский метод
-   http://technodom.shokonurs.codes:3334/redirects?url=link_1_history/
+   http://technodom.shokonurs.codes:3334/redirects?url=z/x/c
    
    Методы управления данными
    а) Получить данные постранично
